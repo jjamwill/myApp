@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<meta charset="utf-8">
+<meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width">
+        
+<title>Blank App</title>
+
+<!--Stylesheet from jQuery Mobile...CDN Link-->
+<link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css" />
+
+<!--My Stylesheet to style my navbar. Tried external...didn't work-->
+        <style>
+                body {
+                  font-family: "Lato", sans-serif;
+                }
+                
+                .sidenav {
+                  height: 100%;
+                  width: 0;
+                  position: fixed;
+                  z-index: 1;
+                  top: 0;
+                  left: 0;
+                  background-color: #111;
+                  overflow-x: hidden;
+                  transition: 0.5s;
+                  padding-top: 60px;
+                }
+                
+                .sidenav a {
+                  padding: 8px 8px 8px 32px;
+                  text-decoration: none;
+                  font-size: 25px;
+                  color: #818181;
+                  display: block;
+                  transition: 0.3s;
+                }
+                
+                .sidenav a:hover {
+                  color: #f1f1f1;
+                }
+                
+                .sidenav .closebtn {
+                  position: absolute;
+                  top: 0;
+                  right: 25px;
+                  font-size: 36px;
+                  margin-left: 50px;
+                }
+                
+                @media screen and (max-height: 450px) {
+                  .sidenav {padding-top: 15px;}
+                  .sidenav a {font-size: 18px;}
+                }
+        </style>
+<!--End of My Stylesheet to style my navbar-->
+
+        <!--Script from jQuery Mobile...CDN Links-->
+        <script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
+        <script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
+
+        <!-- Cordova JavaScript...will use it to help add the Cordova functions-->
+        <script type="text/javascript" charset="utf-8" src="cordova.js"></script>
+        
+        <!--Personalised JavaScript functions-->
+        <script type="text/javascript" charset="utf-8">
+
+            var pictureSource;   // picture source
+            var destinationType; // sets the format of returned value
+
+            // Wait for device API libraries to load
+            // It signals that Cordova's device APIs have loaded and are ready to access.
+            document.addEventListener("deviceready",onDeviceReady,false);
+
+            // Device APIs are available
+            // Cordova Camera API
+            function onDeviceReady() {
+                pictureSource = navigator.camera.PictureSourceType;
+                destinationType = navigator.camera.DestinationType;
+            }
+
+            // Called when a photo is successfully retrieved
+            //
+            function onPhotoDataSuccess(imageData) {
+            // Uncomment to view the base64-encoded image data
+            // console.log(imageData);
+
+            // Get image handle
+            //
+            var smallImage = document.getElementById('smallImage');
+
+            // Unhide image elements
+            //
+            smallImage.style.display = 'block';
+
+            // Show the captured photo
+            // The in-line CSS rules are used to resize the image
+            //
+            smallImage.src = "data:image/jpeg;base64," + imageData;
+            }
+
+            // Called when a photo is successfully retrieved
+            //
+            function onPhotoURISuccess(imageURI) {
+            // Uncomment to view the image file URI
+            // console.log(imageURI);
+
+            // Get image handle
+            //
+            var largeImage = document.getElementById('largeImage');
+
+            // Unhide image elements
+            //
+            largeImage.style.display = 'block';
+
+            // Show the captured photo
+            // The in-line CSS rules are used to resize the image
+            //
+            largeImage.src = imageURI;
+            }
+
+            // A button will call this function
+            //
+            function capturePhoto() {
+            // Take picture using device camera and retrieve image as base64-encoded string
+                navigator.camera.getPicture(onPhotoDataSuccess, onFail, { quality: 50,
+                destinationType: destinationType.DATA_URL });
+            }
+
+            // A button will call this function
+            //
+            function capturePhotoEdit() {
+            // Take picture using device camera, allow edit, and retrieve image as base64-encoded string
+            navigator.camera.getPicture(onPhotoDataSuccess, onFail, { quality: 20, allowEdit: true,
+                destinationType: destinationType.DATA_URL });
+            }
+
+            // A button will call this function
+            //
+            function getPhoto(source) {
+            // Retrieve image file location from specified source
+            navigator.camera.getPicture(onPhotoURISuccess, onFail, { quality: 50,
+                destinationType: destinationType.FILE_URI,
+                sourceType: source });
+            }
+
+            // Called if something bad happens.
+            //
+            function onFail() {
+            confirm('Return to Contact');
+            }
+
+        </script>
+    </head>
+    <body>
+        
+        <!-- Main Page (First Page)-->
+        <div data-role="page" id="main">
+            <div data-role="header" data-position="inline">
+                <a href="index.html" data-icon="power">Logout</a>
+                
+                <h1>Home</h1>
+                <a href="index.html" data-icon="user">jaywill</a>
+            </div>
+                 
+            <div data-role="content">
+                <div id="mySidenav" class="sidenav">
+                    <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+                    <a href="#">About</a>
+                    <a href="#">Services</a>
+                    <a href="#">Calendar</a>
+                    <a href="#">Settings</a>
+                </div>
+
+                <span style="font-size:30px;cursor:pointer" onclick="openNav()">&#9776; menu</span>
+                <h2>Mobile App</h2>
+                <p>MySchool App</p>
+
+                <video src="Cloud.mp4"  width="50%" height="50%" controls="controls"></video>
+                
+                <p>Welcome! View the introductory video above.</P>
+                <p>This is an app by Mr John Williams. This is an hybrid app that uses
+                   HTML5, CSS, JavaScript (Vanilla JS and jQuery Mobile). It was also built
+                   with Cordova. 
+                </p>
+                                                
+                <script>
+                    function openNav() {
+                        document.getElementById("mySidenav").style.width = "250px";
+                    }
+                              
+                    function closeNav() {
+                        document.getElementById("mySidenav").style.width = "0";
+                    }
+                </script>
+                                 
+            </div>
+            
+            <div data-role="footer" class="ui-bar" data-position="fixed">
+                <a href="index.html" data-role="button" data-icon="camera" onclick="capturePhotoEdit();">Camera</a>
+                    &nbsp; &nbsp; &nbsp; 
+                <a href="#pagetwo" data-role="button" data-icon="mail">Contact</a>
+                    &nbsp; &nbsp; &nbsp; 
+                <a href="tel:+15555555" data-role="button" data-icon="phone">Phone</a>
+            </div>
+        </div>
+        <!-- End of First Page -->
+
+
+        <!-- Page Two-->
+        <div data-role="page" id="pagetwo">
+        <div data-role="header" data-position="inline">
+                <a href="index.html" data-icon="delete">Cancel</a>
+                    
+                <h1>Edit Contact</h1>
+                <a href="index.html" data-icon="check">Save</a>
+        </div>
+        <div data-role="content">
+            <form action="#" method="get">
+                <h2>MyApp User Form</h2>
+                <div class="ui-field-contain">
+                    <input type="text" data-icon="user" placeholder="User" />
+                </div>
+                
+                <div class="ui-field-contain">
+                    <input type="password" placeholder="Password" />
+                </div>
+                
+                <div class="ui-field-contain">
+                    <input type="search" placeholder="Search..." />
+                </div>
+            </form>
+        </div>
+        
+        <div data-role="footer" class="ui-bar" data-position="fixed">
+            <a href="index.html" class="ui-btn ui-icon-home ui-btn-icon-left">Home</a>
+            &nbsp; &nbsp; &nbsp; 
+            <a href="index.html" data-role="button" data-icon="camera" onclick="capturePhoto();">Camera</a>
+            &nbsp; &nbsp; &nbsp; 
+            <a href="#page3" data-role="button" data-icon="phone">Phone</a>
+        </div>
+        </div>
+        <!-- End of Page Two -->
+
+
+        <!-- Page Three-->
+        <div data-role="page" id="page3">
+            <div data-role="header" data-position="inline">
+
+                <div data-role="navbar">
+                    <ul>
+                        <li><a href="index.html" data-icon="carat-l"></a></li>
+                        <li><a href="index.html" data-icon="carat-r"></a></li>
+                    </ul>
+                    
+                </div>
+                    
+                        
+                    <h1>My Information</h1>
+                    
+            </div>
+            <div data-role="content" class="ui-content">
+                <div data-role="collapsible">
+                    <h3>Skills</h3>
+                    <p>I'm the collapsible content. By default I'm closed, but you can click the header to open me.</p>
+                </div>
+
+                <div data-role="collapsible">
+                    <h3>Subjects</h3>
+                    <p>I'm the collapsible content. By default I'm closed, but you can click the header to open me.</p>
+                </div>
+
+                <div data-role="collapsible">
+                    <h3>About</h3>
+                    <p>I'm the collapsible content. By default I'm closed, but you can click the header to open me.</p>
+                </div>
+            </div>
+            
+            <div data-role="footer" class="ui-bar" data-position="fixed">
+                <a href="index.html" class="ui-btn ui-icon-home ui-btn-icon-left">Home</a>
+                &nbsp; &nbsp; &nbsp; 
+                <a href="index.html" data-role="button" data-icon="camera" onclick="capturePhoto();">Camera</a>
+                &nbsp; &nbsp; &nbsp; 
+                <a href="tel:18768795541" data-role="button" data-icon="phone">Phone</a>
+            </div>
+            </div>
+            <!-- End of Page Three -->
+    
+    <script type="text/javascript" src="cordova.js"></script>
+    </body>
+</html>
